@@ -27,6 +27,11 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
+
+app.get("/",(req,res)=>{
+  res.send("Server is running");
+})
+
 app.use('/api', coinRoutes); // Use '/api' as the base URL for coin-related routes
 app.use('/api', alertRoutes);
 // Start the server
