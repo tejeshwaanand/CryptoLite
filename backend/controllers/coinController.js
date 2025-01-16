@@ -156,7 +156,7 @@ exports.fetchCoinDataById = async (req, res) => {
     const { id } = req.params; // Extract the coin ID from the request parameters
 
     // Check if the data is available in Redis cache
-    const cachedCoinData = await getCache(`coinData:${id}`);
+    const cachedCoinData = await getCache(`singlecoinData:${id}`);
     if (cachedCoinData) {
       console.log(`Cache hit for coin ID: ${id}`);
       return res.status(200).json(JSON.parse(cachedCoinData)); // Return cached data
@@ -183,7 +183,7 @@ exports.fetchCoinDataById = async (req, res) => {
     const coinData = await response.json(); // Parse the response as JSON
 
     // Cache the fetched data in Redis for 10 minutes
-    await setCache(`coinData:${id}`, JSON.stringify(coinData), 60); // TTL = 60 seconds = 1 minutes
+    await setCache(`singlecoinData:${id}`, JSON.stringify(coinData), 60); // TTL = 60 seconds = 1 minutes
 
     return res.status(200).json(coinData); // Return the fresh data
   } catch (error) {
@@ -238,13 +238,12 @@ exports.fetchCoinDataByDays = async (req, res) => {
 };
 
 exports.fetchCoinPriceById = async (req, res) => {
-  const { selectedCoin } = req.params; // Get coinId from params
-  const url = `https://api.coingecko.com/api/v3/coins/${selectedCoin}`;
+  
   try {
     const { id } = req.params; // Extract the coin ID from the request parameters
 
     // Check if the data is available in Redis cache
-    const cachedCoinData = await getCache(`coinData:${id}`);
+    const cachedCoinData = await getCache(`coinprice:${id}`);
     if (cachedCoinData) {
       console.log(`Cache hit for coin ID: ${id}`);
       return res.status(200).json(JSON.parse(cachedCoinData)); // Return cached data
@@ -268,11 +267,11 @@ exports.fetchCoinPriceById = async (req, res) => {
       throw new Error(`Failed to fetch coin data. Status: ${response.status}`);
     }
     
-    const coinData = await response.json(); // Parse the response as JSON
+    const coindata = await response.json(); // Parse the response as JSON
     
-    const currentPrice = coinData.market_data.current_price.usd;
+    const currentPrice = coindata.market_data.current_price.usd;
     // Cache the fetched data in Redis for 5 sec
-    await setCache(`coinData:${id}`, JSON.stringify(coinData), 600); // TTL = 5 seconds 
+    await setCache(`coinprice:${id}`, JSON.stringify(currentPrice), 600); // TTL = 5 seconds 
 
     return res.status(200).json(currentPrice); // Return the fresh data
   } catch (error) {
@@ -287,7 +286,7 @@ exports.fetchCompanyHoldings = async (req, res) => {
     const { coin } = req.params; // Extract the coin ID from the request parameters
 
     // Check if the data is available in Redis cache
-    const cachedCoin = await getCache(`coinData:${coin}`);
+    const cachedCoin = await getCache(`coinholding:${coin}`);
     if (cachedCoin) {
       console.log(`Cache hit for coin ID: ${coin}`);
       return res.status(200).json(JSON.parse(cachedCoin)); // Return cached data
@@ -314,7 +313,7 @@ exports.fetchCompanyHoldings = async (req, res) => {
     const coincompany = await response.json(); // Parse the response as JSON
 
     // Cache the fetched data in Redis for 10 minutes
-    await setCache(`coinData:${coin}`, JSON.stringify(coincompany), 600); // TTL = 600 seconds = 10 minutes
+    await setCache(`coinholding:${coin}`, JSON.stringify(coincompany), 600); // TTL = 600 seconds = 10 minutes
 
     return res.status(200).json(coincompany); // Return the fresh data
   } catch (error) {
@@ -322,18 +321,5 @@ exports.fetchCompanyHoldings = async (req, res) => {
     return res.status(500).json({ error: 'Failed to fetch company holding data', details: error.message });
   }
 };
-
-
-// export const fetchCompanyHoldings = async (coin) => {
-//   try {
-//     const response = await axios.get(
-//       `${COINGECKO_API_URL}/companies/public_treasury/${coin}`
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.log("Error fetching company holding data", error);
-//     throw error;
-//   }
-// };
 
 
