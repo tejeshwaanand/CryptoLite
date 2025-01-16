@@ -66,10 +66,23 @@ The backend provides APIs to the frontend for:
 - Setting and verifying alerts
 
 #### Environment Variables
-The backend also uses a `.env` file to securely store:
-- API keys for third-party services (e.g., CoinGecko, SendGrid)
-- Database connection strings
-- Other sensitive configurations
+
+Here is the list of environment variables that need to be configured in the backend `.env` file:
+
+- `MONGO_URI=mongodb+srv://teju:<your_password>@crypto.sbgkp.mongodb.net/?retryWrites=true&w=majority&appName=crypto`
+- `COINGECKO_API_URL=https://api.coingecko.com/api/v3`
+- `COINGECKO_API_KEY=you_api_key`
+- `REDIS_PASSWORD=redis_password`
+- `EMAIL_USER=hello@example.com`
+- `EMAIL_PASS=you_password`
+
+Make sure to replace the placeholders with your actual values:
+- `<your_password>`: Your MongoDB password.
+- `you_api_key`: Your CoinGecko API key.
+- `redis_password`: Your Redis password.
+- `hello@example.com`: Your email address for sending alerts.
+- `you_password`: Your email password (ensure to handle it securely).
+
 
 ---
 
@@ -126,20 +139,3 @@ This project combines a robust backend with an interactive frontend to deliver a
 
 ---
 
-## 6. Environment Variables (Backend)
-
-Here is the list of environment variables that need to be configured in the backend `.env` file:
-
-- `MONGO_URI=mongodb+srv://teju:<your_password>@crypto.sbgkp.mongodb.net/?retryWrites=true&w=majority&appName=crypto`
-- `COINGECKO_API_URL=https://api.coingecko.com/api/v3`
-- `COINGECKO_API_KEY=you_api_key`
-- `REDIS_PASSWORD=redis_password`
-- `EMAIL_USER=hello@example.com`
-- `EMAIL_PASS=you_password`
-
-Make sure to replace the placeholders with your actual values:
-- `<your_password>`: Your MongoDB password.
-- `you_api_key`: Your CoinGecko API key.
-- `redis_password`: Your Redis password.
-- `hello@example.com`: Your email address for sending alerts.
-- `you_password`: Your email password (ensure to handle it securely).
