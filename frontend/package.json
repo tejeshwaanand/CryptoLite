@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy":"https://cryptolite-backend.vercel.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
