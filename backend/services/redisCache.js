@@ -2,8 +2,8 @@ const Redis = require('ioredis');
 require('dotenv').config();
 
 const redis = new Redis({
-    host: 'redis-17848.crce179.ap-south-1-1.ec2.redns.redis-cloud.com',
-    port: 17848,
+    host: 'redis-14829.c61.us-east-1-3.ec2.redns.redis-cloud.com',
+    port: 14829,
     password: process.env.REDIS_PASSWORD,
     // No TLS option added, so it won't use TLS
 });
