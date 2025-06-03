@@ -21,10 +21,27 @@ const app = express();
 
 connectDB();
 
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://cryptolite-frontend.vercel.app'
+];
+
 // Middleware
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // enable if using cookies or Authorization headers
+}));
 
 // Routes
 
